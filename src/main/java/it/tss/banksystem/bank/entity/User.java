@@ -81,6 +81,10 @@ public class User extends AbstractEntity implements Serializable {
     public void setPwd(String pwd) {
         this.pwd = pwd;
     }
+    
+    public void setPwd(JsonString pwd){
+        setPwd(pwd== null ? this.pwd : pwd.getString());
+    }
 
     public String getEmail() {
         return email;
@@ -91,7 +95,7 @@ public class User extends AbstractEntity implements Serializable {
     }
     
     public void setEmail(JsonString email){
-        setFname(email== null ? this.email : email.getString());
+        setEmail(email== null ? this.email : email.getString());
     }
 
     public String getTel() {
@@ -100,6 +104,10 @@ public class User extends AbstractEntity implements Serializable {
 
     public void setTel(String tel) {
         this.tel = tel;
+    }
+    
+    public void setTel(JsonString tel){
+        setTel(tel== null ? this.tel : tel.getString());
     }
 
     public Role getRole() {

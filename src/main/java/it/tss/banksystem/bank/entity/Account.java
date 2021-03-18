@@ -27,6 +27,10 @@ public class Account extends AbstractEntity implements Serializable{
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id")
     private User user;
+    
+    private boolean deleted=false;
+
+   
 
     public Account() {
     }
@@ -54,6 +58,7 @@ public class Account extends AbstractEntity implements Serializable{
         this.overDraft = overDraft;
     }
 
+
     public User getUser() {
         return user;
     }
@@ -62,5 +67,11 @@ public class Account extends AbstractEntity implements Serializable{
         this.user = user;
     }
     
-    
+     public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
 }

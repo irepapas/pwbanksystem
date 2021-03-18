@@ -34,7 +34,8 @@ public class UserStore {
         user.setFname(json.getJsonString("fname"));
         user.setLname(json.getJsonString("lname"));
         user.setEmail(json.getJsonString("email"));
-        
+        user.setTel(json.getJsonString("tel"));
+        user.setPwd(json.getJsonString("pwd"));
         return em.merge(user);
         
     }
