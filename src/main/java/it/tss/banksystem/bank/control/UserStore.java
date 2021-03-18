@@ -15,6 +15,7 @@ import javax.json.JsonObject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 /**
  *
@@ -29,6 +30,10 @@ public class UserStore {
 
     @Inject
     AccountStore accountStore;
+    
+    @Inject
+    @ConfigProperty(name = "maxResult", defaultValue = "10")
+    int maxResult;
     
     public User update(User user, JsonObject json){
         user.setFname(json.getJsonString("fname"));
@@ -51,8 +56,10 @@ public class UserStore {
         return found == null ? Optional.empty(): Optional.of(found);
     }
 
-    public List<User> search() {
+    public List<User> search(int start, int maxResult ) {
         return em.createQuery("select e from User e where e.deleted=false order by e.usr ", User.class)
+                .setFirstResult(start)
+                .setMaxResults(maxResult == 0 ? this.maxResult : maxResult)
                 .getResultList();
     }
 
