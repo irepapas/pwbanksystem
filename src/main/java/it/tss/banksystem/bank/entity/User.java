@@ -6,6 +6,7 @@
 package it.tss.banksystem.bank.entity;
 
 import java.io.Serializable;
+import javax.json.JsonString;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -36,6 +37,9 @@ public class User extends AbstractEntity implements Serializable {
     private String tel;
     @Enumerated(EnumType.STRING)
     private Role role = Role.USER;
+    
+    //flag per mantenere dati passati dell'utente
+    private boolean deleted=false;
 
 
     public String getFname() {
@@ -45,6 +49,10 @@ public class User extends AbstractEntity implements Serializable {
     public void setFname(String fname) {
         this.fname = fname;
     }
+    
+    public void setFname(JsonString fname){
+        setFname(fname== null ? this.fname : fname.getString());
+    }
 
     public String getLname() {
         return lname;
@@ -52,6 +60,10 @@ public class User extends AbstractEntity implements Serializable {
 
     public void setLname(String lname) {
         this.lname = lname;
+    }
+    
+    public void setLname(JsonString lname){
+        setFname(lname== null ? this.lname : lname.getString());
     }
 
     public String getUsr() {
@@ -77,6 +89,10 @@ public class User extends AbstractEntity implements Serializable {
     public void setEmail(String email) {
         this.email = email;
     }
+    
+    public void setEmail(JsonString email){
+        setFname(email== null ? this.email : email.getString());
+    }
 
     public String getTel() {
         return tel;
@@ -93,5 +109,15 @@ public class User extends AbstractEntity implements Serializable {
     public void setRole(Role role) {
         this.role = role;
     }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
+    }
+    
+    
 
 }

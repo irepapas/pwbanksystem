@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Optional;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.json.JsonObject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
@@ -29,12 +30,19 @@ public class UserStore {
     @Inject
     AccountStore accountStore;
     
-    public Optional<User> aggiorna(Long id){
+    public User update(User user, JsonObject json){
+        user.setFname(json.getJsonString("fname"));
+        user.setLname(json.getJsonString("lname"));
+        user.setEmail(json.getJsonString("email"));
+        
+        return em.merge(user);
         
     }
     
     public void delete (Long id){
-        em.remove(em.find(User.class, id));
+        User found = em.find(User.class, id);
+        found.setDeleted(true);
+        em.merge(found);
     }
     
     public Optional<User> find(Long id){
@@ -43,7 +51,7 @@ public class UserStore {
     }
 
     public List<User> search() {
-        return em.createQuery("select e from User e order by e.usr ", User.class)
+        return em.createQuery("select e from User e where e.deleted=false order by e.usr ", User.class)
                 .getResultList();
     }
 

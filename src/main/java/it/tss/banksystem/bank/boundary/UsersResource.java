@@ -10,10 +10,12 @@ import it.tss.banksystem.bank.entity.User;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
+import javax.json.JsonObject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.NotFoundException;
+import javax.ws.rs.PATCH;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -52,21 +54,26 @@ public class UsersResource {
     @Path("{id}")
     public Response find (@PathParam("id") Long id){
         User user = store.find(id).orElseThrow(() -> new NotFoundException());
-        return Response.ok().build().;
+        return Response.ok().entity(user).build();
      }
     
-    @PUT
+    @PATCH
     @Path ("{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response aggiorna(){
-        
+    public Response update(@PathParam("id") Long id, JsonObject json){
+        User user= store.find(id).orElseThrow(()-> new NotFoundException());
+        User updated = store.update(user,json);
+        return Response.ok().entity(updated).build();
     }
     
     
     @DELETE
     @Path ("{id}")
     @Produces (MediaType.APPLICATION_JSON)
-    public Response elimina(){
+    public Response delete(@PathParam("id") Long id){
+        User user= store.find(id).orElseThrow(()-> new NotFoundException());
+        store.delete(id);
+        return Response.status(Response.Status.NO_CONTENT).build();
         
     }
 }
